@@ -6,6 +6,8 @@ Settings can be adjusted through `config.json`, including:
 - Whether the sound effect should be muted
 - What encouraging (or chastising) messages the add-on may choose to display
 
+The AnkiWeb page (with the download information) is [here](https://ankiweb.net/shared/info/395996975).
+
 #### Screenshots
 ![Screenshot of pop-up message over Anki card, saying "You only spent 5 seconds on this card. Rushing won't help you learn."](./screenshots/screenshot1.JPG)
 
