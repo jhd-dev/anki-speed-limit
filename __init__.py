@@ -35,12 +35,20 @@ MIN_EASY_SECONDS = config['MIN_EASY_SECONDS']
 SLOW_DOWN_MESSAGES = config['SLOW_DOWN_MESSAGES']
 
 def show_pop_up(seconds_taken):
-    if not MUTED:
-        play(slow_down_sound)
+    """
+    Displays a pop-up window on screen detailing the number of seconds taken, along with a brief message
+
+    :param seconds_taken: How many seconds (rounded down) the user stayed on the card
+    """
     if seconds_taken < 2:
         showInfo( "You only spent a second on this card! %s" % choice(SLOW_DOWN_MESSAGES) )
     else:
         showInfo( "You only spent %d seconds on this card. %s" % ( seconds_taken, choice(SLOW_DOWN_MESSAGES) ) )
+
+def play_sound():
+    """ Plays a short sound effect if the add-on is not muted """
+    if not MUTED:
+        play(slow_down_sound)
 
 def judge_pace_new(card, ease, early): # 2.1.20+
     judge_pace(card, ease)
@@ -49,12 +57,20 @@ def judge_pace_old(self, ease): # 2.1.19-
     judge_pace(self.card, ease)
 
 def judge_pace(card, ease):
+    """
+    Determines if the user answered the card too quickly, and alerts the user if so
+
+    :param card: The card the user has just answered
+    :param ease: The difficulty-corresponding button the user selected (1 = incorrect)
+    """
     if (ease == 1 and card.timeTaken() < MIN_AGAIN_SECONDS * 1000
         or ease == 2 and card.timeTaken() < MIN_HARD_SECONDS * 1000
         or ease == 3 and card.timeTaken() < MIN_GOOD_SECONDS * 1000
         or ease == 4 and card.timeTaken() < MIN_EASY_SECONDS * 1000):
         show_pop_up( floor(card.timeTaken() / 1000) )
+        play_sound()
 
+# attach hook depending on version compatibility
 try:
     hooks.schedv2_did_answer_review_card.append(judge_pace_new) #2.1.20+
 except AttributeError:
