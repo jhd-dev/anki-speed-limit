@@ -8,20 +8,24 @@ from aqt.reviewer import Reviewer
 from aqt.utils import showInfo
 from random import choice
 
-# the minimum number of seconds the user should look at a card
-MIN_SECONDS = 10
+# the minimum number of seconds the user should look at a card with each ease
+MIN_AGAIN_SECONDS = 10
+MIN_HARD_SECONDS = 5
+MIN_GOOD_SECONDS = 3
+MIN_EASY_SECONDS = 1
 
 # the potential messages to be shown when the user continues too quickly
 SLOW_DOWN_MESSAGES = [
     "Take your time!",
     "Make sure you're really internalizing the info before continuing!",
-    "Consider making a mnemonic device right now to help you remember!",
-    "Hold on! Take some time to think about WHY you got it wrong.",
-    "Rushing won't help you remember.",
+    "Consider making a mnemonic device right now to help you to better remember!",
+    "Rushing won't help you learn.",
     "Not giving thing all of your attention will only make things take longer.",
     "Haste makes waste!",
-    "Slow down there, speedster!"
 ]
+
+def show_pop_up():
+    showInfo( choice(SLOW_DOWN_MESSAGES) )
 
 def judge_pace_new(card, ease, early): # 2.1.20+
     judge_pace(card, ease)
@@ -30,11 +34,11 @@ def judge_pace_old(self, ease): # 2.1.19-
     judge_pace(self.card, ease)
 
 def judge_pace(card, ease):
-    if ease == 1:
-        #if mw.col.sched.answerButtons(self.card) == 2:
-        if card.timeTaken() < MIN_SECONDS * 1000:
-            # show a message box
-            showInfo( choice(SLOW_DOWN_MESSAGES) )
+    if (ease == 1 and card.timeTaken() < MIN_AGAIN_SECONDS * 1000
+        or ease == 2 and card.timeTaken() < MIN_HARD_SECONDS * 1000
+        or ease == 3 and card.timeTaken() < MIN_GOOD_SECONDS * 1000
+        or ease == 4 and card.timeTaken() < MIN_EASY_SECONDS * 1000):
+        show_pop_up()
 
 try:
     hooks.schedv2_did_answer_review_card.append(judge_pace_new) #2.1.20+
