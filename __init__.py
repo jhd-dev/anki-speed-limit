@@ -6,6 +6,7 @@ from aqt import mw # import the main window object (mw) from aqt
 from aqt.qt import *
 from aqt.reviewer import Reviewer
 from aqt.utils import showInfo
+from math import floor
 from random import choice
 
 # the minimum number of seconds the user should look at a card with each ease
@@ -20,12 +21,15 @@ SLOW_DOWN_MESSAGES = [
     "Make sure you're really internalizing the info before continuing!",
     "Consider making a mnemonic device right now to help you to better remember!",
     "Rushing won't help you learn.",
-    "Not giving thing all of your attention will only make things take longer.",
+    "Not giving it all of your attention will only make things take longer.",
     "Haste makes waste!",
 ]
 
-def show_pop_up():
-    showInfo( choice(SLOW_DOWN_MESSAGES) )
+def show_pop_up(seconds_taken):
+    if seconds_taken < 2:
+        showInfo( "You only spent a second on this card! %s" % choice(SLOW_DOWN_MESSAGES) )
+    else:
+        showInfo( "You only spent %d seconds on this card. %s" % ( seconds_taken, choice(SLOW_DOWN_MESSAGES) ) )
 
 def judge_pace_new(card, ease, early): # 2.1.20+
     judge_pace(card, ease)
@@ -38,7 +42,7 @@ def judge_pace(card, ease):
         or ease == 2 and card.timeTaken() < MIN_HARD_SECONDS * 1000
         or ease == 3 and card.timeTaken() < MIN_GOOD_SECONDS * 1000
         or ease == 4 and card.timeTaken() < MIN_EASY_SECONDS * 1000):
-        show_pop_up()
+        show_pop_up( floor(card.timeTaken() / 1000) )
 
 try:
     hooks.schedv2_did_answer_review_card.append(judge_pace_new) #2.1.20+
