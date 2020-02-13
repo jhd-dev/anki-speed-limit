@@ -2,17 +2,28 @@
 # Copyright (C) 2020 Jonathan Doliver
 
 from anki import hooks
-from aqt import mw # import the main window object (mw) from aqt
+from anki.sound import play
+from aqt import mw # main window object
 from aqt.qt import *
 from aqt.reviewer import Reviewer
 from aqt.utils import showInfo
 from math import floor
+from os import path
 from random import choice
 
-config = mw.addonManager.getConfig(__name__) # parse config.json
+# parse config.json
+config = mw.addonManager.getConfig(__name__)
+
+# retrieve sound effect
+addon_path = path.dirname(__file__)
+user_files = path.join(addon_path, "user_files")
+slow_down_sound = path.join(user_files, "slow_down.mp3")
 
 # whether the add-on should take effect
 ACTIVE = config['ACTIVE']
+
+# whether the sound effect should be muted
+MUTED = config['MUTED']
 
 # the minimum number of seconds the user should look at a card with each ease
 MIN_AGAIN_SECONDS = config['MIN_AGAIN_SECONDS']
@@ -24,6 +35,8 @@ MIN_EASY_SECONDS = config['MIN_EASY_SECONDS']
 SLOW_DOWN_MESSAGES = config['SLOW_DOWN_MESSAGES']
 
 def show_pop_up(seconds_taken):
+    if not MUTED:
+        play(slow_down_sound)
     if seconds_taken < 2:
         showInfo( "You only spent a second on this card! %s" % choice(SLOW_DOWN_MESSAGES) )
     else:

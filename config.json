@@ -1,5 +1,6 @@
 {
   "ACTIVE": true,
+  "MUTED": false,
   "MIN_AGAIN_SECONDS": 10,
   "MIN_HARD_SECONDS": 5,
   "MIN_GOOD_SECONDS": 3,
