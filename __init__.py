@@ -9,21 +9,19 @@ from aqt.utils import showInfo
 from math import floor
 from random import choice
 
+config = mw.addonManager.getConfig(__name__) # parse config.json
+
+# whether the add-on should take effect
+ACTIVE = config['ACTIVE']
+
 # the minimum number of seconds the user should look at a card with each ease
-MIN_AGAIN_SECONDS = 10
-MIN_HARD_SECONDS = 5
-MIN_GOOD_SECONDS = 3
-MIN_EASY_SECONDS = 1
+MIN_AGAIN_SECONDS = config['MIN_AGAIN_SECONDS']
+MIN_HARD_SECONDS = config['MIN_HARD_SECONDS']
+MIN_GOOD_SECONDS = config['MIN_GOOD_SECONDS']
+MIN_EASY_SECONDS = config['MIN_EASY_SECONDS']
 
 # the potential messages to be shown when the user continues too quickly
-SLOW_DOWN_MESSAGES = [
-    "Take your time!",
-    "Make sure you're really internalizing the info before continuing!",
-    "Consider making a mnemonic device right now to help you to better remember!",
-    "Rushing won't help you learn.",
-    "Not giving it all of your attention will only make things take longer.",
-    "Haste makes waste!",
-]
+SLOW_DOWN_MESSAGES = config['SLOW_DOWN_MESSAGES']
 
 def show_pop_up(seconds_taken):
     if seconds_taken < 2:

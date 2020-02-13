@@ -1,0 +1,15 @@
+{
+  "ACTIVE": true,
+  "MIN_AGAIN_SECONDS": 10,
+  "MIN_HARD_SECONDS": 5,
+  "MIN_GOOD_SECONDS": 3,
+  "MIN_EASY_SECONDS": 1,
+  "SLOW_DOWN_MESSAGES": [
+    "Take your time!",
+    "Make sure you're really internalizing the info before continuing!",
+    "Consider making a mnemonic device right now to help you to better remember!",
+    "Rushing won't help you learn.",
+    "Not giving it all of your attention will only make things take longer.",
+    "Haste makes waste!"
+  ]
+}
