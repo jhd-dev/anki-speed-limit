@@ -67,8 +67,8 @@ def judge_pace(card, ease):
         or ease == 2 and card.timeTaken() < MIN_HARD_SECONDS * 1000
         or ease == 3 and card.timeTaken() < MIN_GOOD_SECONDS * 1000
         or ease == 4 and card.timeTaken() < MIN_EASY_SECONDS * 1000):
-        show_pop_up( floor(card.timeTaken() / 1000) )
         play_sound()
+        show_pop_up( floor(card.timeTaken() / 1000) )
 
 # attach hook depending on version compatibility
 try:
